@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid d-flex justify-content-center">
+          <a class="navbar-brand" href="#"><h3>Student list</h3></a>
+          <style>
+            .navbar-brand {
+                color: #000000;
+                font-size: 30px;
+            }
+        </style>
+
+        </div>
+      </nav>
+    <div class="container">
+        <div class="col md-12 d-flex justify-content-center mt-3 mb-3" >
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add student</button>
+        </div>  
+             <!-- Modal -->
+             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Form</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <!--post-->
+                  <form action="{{ url_for('create') }}" method="POST">
+                  <div class="modal-body">
+                    <!--form-->
+
+                    <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">Nim</label>
+                      <input type="text" class="form-control" name="tnim" placeholder="example : 17190000">
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">Nama</label>
+                      <input type="text" class="form-control" name="tnama" placeholder="">
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">Email</label>
+                      <input type="email" class="form-control" name="temail" placeholder="example@gmail.com">
+                    </div>
+                  
+                  
+                  
+                       <!--form-->
+                  
+                  
+                  </div>
+                
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                  </div>
+                </form>
+                </div>
+              </div>
+            </div>
+            <!-- Modal -->
+
+
+
+        <div>
+          {% with messages = get_flashed_messages() %}
+          
+            {% if messages %}
+            <ul class=flashes>
+              {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <strong>{{ message }}</strong>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
+             
+        </div>
+
+        <style>
+            .container.bt {
+        background-color: #d7d8e8; /* Set the desired background color */
+        font-size: 18px; /* Set the desired font size */
+        /* Add any other custom styles you want */
+        max-width: 800px;
+        max-height: 100px;
+    }
+          </style>
+                      
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                      <th scope="col">No</th>
+                      <th scope="col">Nim</th>
+                      <th scope="col">Nama</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                   
+                    <tbody>
+                      {%for row in student%}
+                        <tr>
+                          <th scope="row">{{loop.index}}</th>
+                          <td>{{row.0}}</td>
+                          <td>{{row.1}}</td>
+                          <td>{{row.2}}</td>
+                          <td>
+
+                            <!--updatemodal triger-->
+                            
+                            <a href="/update/{{row.0}}" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalupdate{{loop.index}}">Edit</a>
+                            <!--updatemodal-->                    
+                    
+                            
+                              
+
+                                  <!-- Modal update -->
+                                 <div class="modal fade" id="modalupdate{{ loop.index }}"data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                   <div class="modal-dialog">
+                                     <div class="modal-content">
+                                       <div class="modal-header">
+                                         <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit data</h1>
+                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                       </div>
+                                       <!--post-->
+                                       <form action="{{ url_for('update') }}" method="POST">
+                                       <div class="modal-body">
+                                         <!--form-->
+                                         
+                                         <div class="mb-3">
+                                           <label for="exampleFormControlInput1" class="form-label" >Nim</label>
+                                           <input type="text" class="form-control" name="tnim1" placeholder="example : 17190000" value="{{row.0}}" readonly >
+                                         </div>
+                                         <div class="mb-3">
+                                           <label for="exampleFormControlInput1" class="form-label">Nama</label>
+                                           <input type="text" class="form-control" name="tnama1" placeholder="" value="{{row.1}}">
+                                         </div>
+                                         <div class="mb-3">
+                                           <label for="exampleFormControlInput1" class="form-label">Email</label>
+                                           <input type="email" class="form-control" name="temail1" placeholder="example@gmail.com" value="{{row.2}}">
+                                         </div>
+                                      
+                                      
+                                      
+                                            <!--form-->
+                                       </div>
+                                    
+                                       <div class="modal-footer">
+                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                         <button type="submit" class="btn btn-primary">Confirm</button>
+                                       </div>
+                                     </form>
+                                     </div>
+                                   </div>
+                                 </div>
+                                <!-- Modal update end -->
+
+
+                    
+
+                            <!--modal delete trigger-->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modaldelete{{loop.index}}">Delete</a></button>
+
+                            
+
+                            <!-- Modal delete-->
+                            <div class="modal fade" id="modaldelete{{loop.index}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                              
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p>Are you sure want to delete NIM : {{row.0}}, NAME : {{row.1}}</p>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <form action="/delete/{{ row.0 }}" method="post">
+                                      <!-- Add a CSRF token to the form to prevent Cross-Site Request Forgery (CSRF) attacks -->
+                                      <!-- Include the CSRF token in your Flask form handling -->
+                                      <!-- See Flask-WTF or similar extension for handling CSRF tokens -->
+                                      <button type="submit" class="btn btn-danger">Delete</button>
+                                  </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            
+
+
+
+
+
+
+
+                          </td>
+                        </tr>
+                        {%endfor%}
+                      </tbody>
+                   
+                  </thead>
+            </table>
+        </div>
+
+ 
+
+        
+                
+      
+      
+      <div class="container-fluid Welcome d-flex flex-column justify-content-center mt-3">
+        
+
+            
+
+
+        <div class="d-flex justify-content-center mt-3">
+            <h3>Lavafern</h3>
+        </div>
+
+        <style>
+            .container-fluid.Welcome {
+        background-color: #dddee2; /* Set the desired background color */
+        font-size: 18px; /* Set the desired font size */
+        /* Add any other custom styles you want */
+        max-width: 8000px;
+        max-height: 5000px;
+    }
+          </style>
+      </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>
